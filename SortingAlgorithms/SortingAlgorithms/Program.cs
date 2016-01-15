@@ -18,7 +18,7 @@ namespace SortingAlgorithms
             Console.WriteLine();
             Console.WriteLine("1. Bubble Sort");
             Console.WriteLine("2. Insertion Sort");
-            Console.WriteLine("3. Selection Sort");
+            //Console.WriteLine("3. Selection Sort");
             Console.WriteLine();
 
             string choice = Convert.ToString(GetInteger("Please enter the number of your selection"));
@@ -42,6 +42,9 @@ namespace SortingAlgorithms
                 /* case "5":
                     selectionSort(list);
                     break;    */
+                default:
+                    Console.WriteLine("Not a valid choice");
+                    break;
             }
 
             Console.WriteLine();
