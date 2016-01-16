@@ -11,6 +11,8 @@ namespace SortingAlgorithms
     {
         static void Main(string[] args)
         {
+
+            int[] result;
             Console.WriteLine("Loading from file...");
             int[] list = readFromFile();
             Console.WriteLine("File loaded.");
@@ -18,7 +20,8 @@ namespace SortingAlgorithms
             Console.WriteLine();
             Console.WriteLine("1. Bubble Sort");
             Console.WriteLine("2. Insertion Sort");
-            //Console.WriteLine("3. Selection Sort");
+            Console.WriteLine("3. MergeSort");
+            Console.WriteLine("4. MySort");
             Console.WriteLine();
 
             string choice = Convert.ToString(GetInteger("Please enter the number of your selection"));
@@ -28,17 +31,21 @@ namespace SortingAlgorithms
             switch(choice)
             {
                 case "1":
-                    bubbleSort(list);
+                    result = bubbleSort(list);
+                    printList("Bubble Sort", result);
                     break;
                 case "2":
-                    insertionSort(list);
+                    result = insertionSort(list);
+                    printList("Insertion Sort", result);
                     break;
-                /* case "3":
-                    selectionSort(list);
-                    break;    */
-                /* case "4":
-                    selectionSort(list);
-                    break;    */
+                case "3":
+                   result = MergeSort(list);
+                   printList("MergeSort: ", result);
+                    break;   
+                case "4":
+                    result = mySort(list);
+                    printList("MySort: ", result);
+                    break;    
                 /* case "5":
                     selectionSort(list);
                     break;    */
@@ -63,13 +70,13 @@ namespace SortingAlgorithms
                 {
                     string input = Console.ReadLine();
                     int x = int.Parse(input);
- /*upddate for more*/if (x >0 && x<3)
+ /*update for more*/if (x >0 && x<5)
                     {
                         return x;
                     }
                     else
                     {
-                        Console.WriteLine("Error: Please enter the number of your selection (1-2).");
+                        Console.WriteLine("Error: Please enter the number of your selection (1-4).");
                     }
                 }
                 catch (Exception)
@@ -82,9 +89,9 @@ namespace SortingAlgorithms
         //Fetch data from file, parse to array
         static int[] readFromFile()
         {
-        string fileContents = File.ReadAllText("C:\\dev\\data\\unsorted-numbers.txt");
-        int[] unsortedValues = fileContents.Split(',').Select(int.Parse).ToArray();
-        return unsortedValues;
+            string fileContents = File.ReadAllText("C:\\dev\\data\\unsorted-numbers.txt");
+            int[] unsortedValues = fileContents.Split(',').Select(int.Parse).ToArray();
+            return unsortedValues;
         }
 
         //Printing Method
@@ -106,7 +113,7 @@ namespace SortingAlgorithms
         }
 
         //Bubble Sort Method
-        static void bubbleSort(int[] list)
+        static int[] bubbleSort(int[] list)
         {
             for (var i = list.Length - 1; i >= 0; i--)
             {
@@ -120,11 +127,11 @@ namespace SortingAlgorithms
                     }
                 }
             }
-            printList("Bubble Sort", list);
+            return list;
         }
 
         //Insertion Sort Method
-        static void insertionSort(int[] list)
+        static int[] insertionSort(int[] list)
         {
             for (int i = 1; i < list.Length; i++)
             {
@@ -141,24 +148,25 @@ namespace SortingAlgorithms
                 }
                 list[j] = temp;
             }
-            printList("Insertion Sort", list);
+            return list;
         }
-        /*
+
         //Merge Sort Method - Split
         static int[] MergeSort(int[] list)
         {
             if (list.Length <= 1)
             {
                 return list;
+
             }
 
             //Split the list into two sublists
-            int middleIndex = (list.length) / 2;
+            int middleIndex = (list.Length) / 2;
             int[] left = new int[middleIndex];
-            int[] right = new int[middleIndex];
+            int[] right = new int[list.Length - middleIndex];
 
             Array.Copy(list, left, middleIndex);
-            Array.Copy(list, middleIndex, right, middleIndex, middleIndex);
+            Array.Copy(list, middleIndex, right, 0, right.Length);
 
             //Recursively call MergeSort() to split sublists to size of 1 each
             left = MergeSort(left);
@@ -167,15 +175,64 @@ namespace SortingAlgorithms
             //Merge the sublists returned from prior calls to MergeSort
             //and return the resulting merged sublist
             return Merge(left, right);
+
         }
 
         //MergeSort Method - Merge
-
         static int[] Merge(int[] left, int[] right)
         {
+            //Convert input arrays to lists for flexibility and resizing
+            List<int> leftList = left.OfType<int>().ToList();
+            List<int> rightList = right.OfType<int>().ToList();
+            List<int> resultList = new List<int>();
 
+            while (leftList.Count > 0 || rightList.Count > 0)
+            {
+                if (leftList.Count > 0 && rightList.Count > 0)
+                {
+                    //Compare the 2 lists, append the smaller element to the result list
+                    //remove from original list
+                    if (leftList[0] <= rightList[0])
+                    {
+                        resultList.Add(leftList[0]);
+                        leftList.RemoveAt(0);
+                    }
+                    else
+                    {
+                        resultList.Add(rightList[0]);
+                        rightList.RemoveAt(0);
+                    }
+                }
+                else if (leftList.Count > 0)
+                {
+                    resultList.Add(leftList[0]);
+                    leftList.RemoveAt(0);
+                }
+                else if (rightList.Count > 0)
+                {
+                    resultList.Add(rightList[0]);
+                    rightList.RemoveAt(0);
+                }
+            }
 
+            //Convert list back to array and return
+            int[] result = resultList.ToArray();
+            return result;
         }
-        */
+
+        static int[] mySort(int[] list)
+        {
+            List<int> arrayList = list.OfType<int>().ToList();
+            List<int> resultList = new List<int>();
+
+            for (int i = 0; i < list.Length; i++)
+            {
+                resultList.Add(arrayList.Min());
+                arrayList.Remove(arrayList.Min());
+
+            }
+            return resultList.ToArray();
+        }
+
     }
 }
