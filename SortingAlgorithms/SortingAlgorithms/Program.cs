@@ -11,8 +11,9 @@ namespace SortingAlgorithms
     {
         static void Main(string[] args)
         {
-
             int[] result;
+
+            //Initial user prompt
             Console.WriteLine("Loading from file...");
             int[] list = readFromFile();
             Console.WriteLine("File loaded.");
@@ -20,8 +21,9 @@ namespace SortingAlgorithms
             Console.WriteLine();
             Console.WriteLine("1. Bubble Sort");
             Console.WriteLine("2. Insertion Sort");
-            Console.WriteLine("3. MergeSort");
-            Console.WriteLine("4. MySort");
+            Console.WriteLine("3. Merge Sort");
+            Console.WriteLine("4. My Sort");
+            //Console.WriteLine("5. Quick Sort");
             Console.WriteLine();
 
             string choice = Convert.ToString(GetInteger("Please enter the number of your selection"));
@@ -40,14 +42,15 @@ namespace SortingAlgorithms
                     break;
                 case "3":
                    result = MergeSort(list);
-                   printList("MergeSort: ", result);
+                   printList("Merge Sort: ", result);
                     break;   
                 case "4":
                     result = mySort(list);
-                    printList("MySort: ", result);
+                    printList("My Sort: ", result);
                     break;    
                 /* case "5":
-                    selectionSort(list);
+                    Quick Sort(list);
+                    printList("Quick Sort: ", result);
                     break;    */
                 default:
                     Console.WriteLine("Not a valid choice");
@@ -81,7 +84,7 @@ namespace SortingAlgorithms
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Error: Please enter the number of your selection (1-2)");
+                    Console.WriteLine("Error: Please enter the number of your selection (1-4)");
                 }
             }
         }
@@ -157,7 +160,6 @@ namespace SortingAlgorithms
             if (list.Length <= 1)
             {
                 return list;
-
             }
 
             //Split the list into two sublists
@@ -220,6 +222,8 @@ namespace SortingAlgorithms
             return result;
         }
 
+
+        //My Sort
         static int[] mySort(int[] list)
         {
             List<int> arrayList = list.OfType<int>().ToList();
@@ -233,6 +237,8 @@ namespace SortingAlgorithms
             }
             return resultList.ToArray();
         }
+
+        //Quick Sort - TBD
 
     }
 }
